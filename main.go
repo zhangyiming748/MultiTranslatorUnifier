@@ -1,26 +1,41 @@
 package main
 
 import (
-	"MultiTranslatorUnifier/github"
-	"MultiTranslatorUnifier/linuxdo"
-	translateshell "MultiTranslatorUnifier/translate-shell"
+	"MultiTranslatorUnifier/bootstrap"
 	"log"
-	"sync"
+	"net/http"
+	"time"
+
+	"github.com/gin-contrib/timeout"
+	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	src := "hello"
-	proxy := "http://192.168.1.3:8889"
-	// dst := make(chan string, 1)
-	dst := make(chan map[string]string, 1) // 修改为 map[string]string 的通道
+func testResponse(c *gin.Context) {
+	c.JSON(http.StatusGatewayTimeout, gin.H{
+		"code": http.StatusGatewayTimeout,
+		"msg":  "timeout",
+	})
+}
 
-	once := new(sync.Once)
-	wg := new(sync.WaitGroup)
-	wg.Add(1)
-	go translateshell.TransByBing(src, proxy, once, wg, dst)
-	go translateshell.TransByGoogle(src, proxy, once, wg, dst)
-	go github.TransByGithubDeepLX(src, proxy, once, wg, dst)
-	go linuxdo.TransByLinuxdoDeepLX(src, once, wg, dst)
-	result := <-dst
-	log.Printf("result = %s\n", result)
+func timeoutMiddleware() gin.HandlerFunc {
+	return timeout.New(
+		timeout.WithTimeout(3000*time.Millisecond),
+		timeout.WithHandler(func(c *gin.Context) {
+			c.Next()
+		}),
+		timeout.WithResponse(testResponse),
+	)
+}
+func init() {
+	//util.SetLog("gin.log")
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+}
+func main() {
+	// gin服务
+	gin.SetMode(gin.DebugMode)
+	engine := gin.New()
+	engine.Use(timeoutMiddleware())
+	bootstrap.InitTranslate(engine)
+	// 启动http服务
+	engine.Run(":8192")
 }
