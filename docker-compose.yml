@@ -1,0 +1,5 @@
+# docker run -dit --name trans -v ./:/data golang:1.23.6-alpine3.21 ash
+# docker exec -it trans ash
+# go env -w GO111MODULE=on
+# go env -w GOPROXY=https://goproxy.cn,direct
+# sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#http://mirrors4.tuna.tsinghua.edu.cn/alpine#g' /etc/apk/repositories
