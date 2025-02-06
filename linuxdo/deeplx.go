@@ -15,17 +15,20 @@ import (
 const PREFIX = "https://api.deeplx.org"
 const SUFFIX = "translate"
 
-func TransByLinuxdoDeepLX(src string, once *sync.Once, wg *sync.WaitGroup, dst chan string) {
+func TransByLinuxdoDeepLX(src string, once *sync.Once, wg *sync.WaitGroup, dst chan map[string]string) {
 	apikey := os.Getenv("LINUXDO")
 	result, err := Req(src, apikey)
 	log.Printf("linuxdo 版本 deeplx 返回:%+v\n", result)
+	m := map[string]string{
+		"LinuxDo": result,
+	}
 	if err != nil {
 		log.Printf("linuxdo 版本 deeplx 查询执行出错\t错误原文:%v\n", err.Error())
 		return
 	} else {
 		once.Do(func() {
 			fmt.Println("Bing返回翻译结果")
-			dst <- result
+			dst <- m
 			wg.Done()
 		})
 	}

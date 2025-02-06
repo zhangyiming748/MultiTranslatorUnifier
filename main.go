@@ -11,7 +11,9 @@ import (
 func main() {
 	src := "hello"
 	proxy := "http://192.168.1.3:8889"
-	dst := make(chan string, 1)
+	// dst := make(chan string, 1)
+	dst := make(chan map[string]string, 1) // 修改为 map[string]string 的通道
+
 	once := new(sync.Once)
 	wg := new(sync.WaitGroup)
 	wg.Add(1)
