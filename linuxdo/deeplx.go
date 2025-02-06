@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 	"strings"
 	"sync"
 
@@ -15,8 +14,8 @@ import (
 const PREFIX = "https://api.deeplx.org"
 const SUFFIX = "translate"
 
-func TransByLinuxdoDeepLX(src string, once *sync.Once, wg *sync.WaitGroup, dst chan map[string]string) {
-	apikey := os.Getenv("LINUXDO")
+func TransByLinuxdoDeepLX(src, apikey string, once *sync.Once, wg *sync.WaitGroup, dst chan map[string]string) {
+	//apikey := os.Getenv("LINUXDO")
 	result, err := Req(src, apikey)
 	log.Printf("linuxdo 版本 deeplx 返回:%+v\n", result)
 	m := map[string]string{

@@ -18,8 +18,9 @@ func (t TranslateController) GetTranslate(ctx *gin.Context) {
 
 // 结构体必须大写 否则找不到
 type RequestBody struct {
-	Src   string `json:"src"`
-	Proxy string `json:"dst"`
+	Src        string `json:"src"`
+	Proxy      string `json:"dst,omitempty"`
+	LinuxDoKey string `json:"linuxdokey,omitempty`
 }
 
 type ResponseBody struct {
@@ -39,7 +40,7 @@ func (t TranslateController) PostTranslate(ctx *gin.Context) {
 		fmt.Println(requestBody)
 	}
 	fmt.Println(requestBody.Src, requestBody.Proxy)
-	m := logic.Trans(requestBody.Src, requestBody.Proxy)
+	m := logic.Trans(requestBody.Src, requestBody.Proxy, requestBody.LinuxDoKey)
 	var rep ResponseBody
 	for k, v := range m {
 		rep.From = k

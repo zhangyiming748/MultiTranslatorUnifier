@@ -2,6 +2,7 @@ package main
 
 import (
 	"MultiTranslatorUnifier/bootstrap"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -34,6 +35,20 @@ func main() {
 	// gin服务
 	gin.SetMode(gin.DebugMode)
 	engine := gin.New()
+	// 自定义 Logger 格式
+	engine.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
+		return fmt.Sprintf("[CUSTOM] %s - [%s] \"%s %s %s %d %s \"%s\" %s\"\n",
+			param.ClientIP,
+			param.TimeStamp.Format(time.RFC1123),
+			param.Method,
+			param.Path,
+			param.Request.Proto,
+			param.StatusCode,
+			param.Latency,
+			param.Request.UserAgent(),
+			param.ErrorMessage,
+		)
+	}))
 	engine.Use(timeoutMiddleware())
 	bootstrap.InitTranslate(engine)
 	// 启动http服务
