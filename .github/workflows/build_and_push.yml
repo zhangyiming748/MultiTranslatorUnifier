@@ -24,7 +24,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: zhangyiming748/multi_translator_unifier
+          images: zhangyiming748/translate
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:

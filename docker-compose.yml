@@ -3,8 +3,7 @@ name: multi-translator-unifier-stack
 services:
   mtu:
     container_name: mtu
-    image: trans:local
-    #image: zhangyiming748/multi_translator_unifier
+    image: zhangyiming748/translate
     volumes:
       - go_data:/log
     restart: unless-stopped

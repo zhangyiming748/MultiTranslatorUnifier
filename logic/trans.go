@@ -4,8 +4,14 @@ import (
 	"MultiTranslatorUnifier/github"
 	"MultiTranslatorUnifier/linuxdo"
 	translateshell "MultiTranslatorUnifier/translate-shell"
+	"fmt"
 	"log"
 	"sync"
+	"time"
+)
+
+const (
+	TIMEOUT = 30
 )
 
 func Trans(src, proxy, apikey string) map[string]string {
@@ -24,7 +30,14 @@ func Trans(src, proxy, apikey string) map[string]string {
 		go linuxdo.TransByLinuxdoDeepLX(src, apikey, once, wg, dst)
 	}
 	go github.TransByGithubDeepLX(src, proxy, once, wg, dst)
-	result := <-dst
+	var result map[string]string
+	select {
+	case result = <-dst:
+		//constant.Info(fmt.Sprintf("收到翻译结果:%v\n", dst))
+	case <-time.After(TIMEOUT * time.Second): // 设置超时时间为30秒
+		fmt.Printf("翻译超时,重试\n此时的src = %v\n", src)
+		Trans(src, proxy, apikey)
+	}
 	log.Printf("result = %s\n", result)
 	return result
 }
