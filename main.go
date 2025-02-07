@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/zhangyiming748/MultiTranslatorUnifier/bootstrap"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/model"
 	"github.com/zhangyiming748/MultiTranslatorUnifier/storage"
 	"github.com/zhangyiming748/MultiTranslatorUnifier/util"
 
@@ -23,7 +24,8 @@ func testResponse(c *gin.Context) {
 func init() {
 	util.SetLog()
 	storage.ConnectToMySQL()
-
+	storage.InitRedis()
+	storage.GetMysql().Sync2(model.TranslateHistory{})
 }
 
 func main() {
