@@ -16,4 +16,5 @@ func TestConnectRedis(t *testing.T) {
 	if err != nil {
 		t.Log(err)
 	}
+	InsertTranslationToRedis("hello", "你好", "我猜的")
 }
