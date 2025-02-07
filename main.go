@@ -4,6 +4,7 @@ import (
 	"MultiTranslatorUnifier/bootstrap"
 	"MultiTranslatorUnifier/util"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -28,9 +29,9 @@ func timeoutMiddleware() gin.HandlerFunc {
 	)
 }
 func init() {
-	util.SetLog("gin.log")
-
+	util.SetLog()
 }
+
 func main() {
 	// gin服务
 	gin.SetMode(gin.DebugMode)
@@ -52,5 +53,9 @@ func main() {
 	engine.Use(timeoutMiddleware())
 	bootstrap.InitTranslate(engine)
 	// 启动http服务
-	engine.Run(":8192")
+	port := ":8192"
+	err := engine.Run(port)
+	if err != nil {
+		log.Fatalf("gin服务启动失败,当前端口%s有可能被占用", port)
+	}
 }
