@@ -42,22 +42,9 @@ func main() {
 	}))
 	bootstrap.InitTranslate(engine)
 	// 启动http服务
-	port := ":8192"
-	server := &http.Server{
-		Addr:         port,
-		Handler:      engine,
-		ReadTimeout:  0,                 // 禁用 ReadTimeout
-		WriteTimeout: 0,                 // 禁用 WriteTimeout
-		IdleTimeout:  120 * time.Second, // 保持连接不断开, 喵！
-	}
 
-	// 启动服务器
-	err := server.ListenAndServe()
+	err := engine.Run(":8192")
 	if err != nil {
-		log.Fatalf("gin服务启动失败,当前端口%s有可能被占用：%v", port, err)
+		log.Fatalln("gin服务启动失败,当前端口有可能被占用")
 	}
-	//err := engine.Run(port)
-	//if err != nil {
-	//	log.Fatalf("gin服务启动失败,当前端口%s有可能被占用", port)
-	//}
 }
