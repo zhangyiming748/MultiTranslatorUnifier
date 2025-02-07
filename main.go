@@ -2,8 +2,8 @@ package main
 
 import (
 	"MultiTranslatorUnifier/bootstrap"
+	"MultiTranslatorUnifier/util"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
@@ -28,8 +28,8 @@ func timeoutMiddleware() gin.HandlerFunc {
 	)
 }
 func init() {
-	//util.SetLog("gin.log")
-	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+	util.SetLog("gin.log")
+
 }
 func main() {
 	// gin服务

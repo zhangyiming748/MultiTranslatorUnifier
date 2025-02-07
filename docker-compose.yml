@@ -3,15 +3,18 @@ name: multi-translator-unifier-stack
 services:
   mtu:
     container_name: mtu
-    image: zhangyiming748/multi_translator_unifier
+    image: trans:local
+    #image: zhangyiming748/multi_translator_unifier
     volumes:
       - go_data:/log
     environment:
       - LINUXD=33
+    restart: unless-stopped
     depends_on: # 确保 mtu 在 redis 和 mysql 之后启动
       - redis
       - mysql
-    
+    ports:
+      - "8192:8192"
 
   redis:
     image: redis:8.0-M03-alpine3.21
@@ -22,8 +25,7 @@ services:
       - redis_data:/data
       - ./redis.conf:/usr/local/etc/redis/redis.conf # 假设您有这个配置文件
     command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes
-    restart: always
-    
+    restart: unless-stopped
 
   mysql:
     image: mysql:9.2.0
@@ -31,11 +33,10 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_ROOT_PASSWORD: 123456
     ports:
       - "3306:3306"
-    restart: always
-   
+    restart: unless-stopped
 
 volumes:
   redis_data:
