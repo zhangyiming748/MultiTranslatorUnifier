@@ -59,10 +59,6 @@ func main() {
 	}))
 	bootstrap.InitTranslate(engine)
 
-	h := new(model.TranslateHistory)
-	h.Src = "1"
-	h.Dst = "2"
-	h.InsertOne()
 	// 启动http服务
 	err := engine.Run(":8192")
 	if err != nil {

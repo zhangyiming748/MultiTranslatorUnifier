@@ -2,8 +2,11 @@ package controller
 
 import (
 	"fmt"
-	"github.com/zhangyiming748/MultiTranslatorUnifier/logic"
 	"log"
+
+	"github.com/zhangyiming748/MultiTranslatorUnifier/logic"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/model"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/storage"
 
 	"github.com/gin-gonic/gin"
 )
@@ -51,10 +54,41 @@ func (t TranslateController) PostTranslate(ctx *gin.Context) {
 	}
 	log.Printf("src:%s\tproxy:%s\tlinuxdo:%s\n", requestBody.Src, requestBody.Proxy, requestBody.LinuxDoKey)
 	m := logic.Trans(requestBody.Src, requestBody.Proxy, requestBody.LinuxDoKey)
+	h := new(model.TranslateHistory)
+	h.Src = requestBody.Src
+	if found, err := h.FindBySrc(); err != nil {
+		log.Printf("mysql查询发生错误:%+v\n", err)
+	} else if found {
+		log.Printf("在mysql中找到缓存%+v\n", h)
+		rep := new(ResponseBody)
+		rep.Dst = h.Dst
+		rep.From = "cache"
+		ctx.JSON(200, rep)
+		return
+	} else {
+		log.Printf("没能在mysql中找到相同记录:%+v\n", h)
+	}
+	if dst, _, err := storage.GetTranslationFromRedis(requestBody.Src); err != nil {
+		log.Printf("没能在redis中找到相同记录:%+v\n", h)
+	} else {
+		log.Printf("在redis中找到缓存%v\n", dst)
+		rep := new(ResponseBody)
+		rep.Dst = h.Dst
+		rep.From = "cache"
+		ctx.JSON(200, rep)
+		return
+	}
 	var rep ResponseBody
 	for k, v := range m {
 		rep.From = k
 		rep.Dst = v
+		h := new(model.TranslateHistory)
+		h.Src = requestBody.Src
+		h.Dst = v
+		h.From = k
+		h.InsertOne()
+		storage.InsertTranslationToRedis(requestBody.Src, v, k)
 	}
+
 	ctx.JSON(200, rep)
 }
