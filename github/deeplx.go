@@ -9,9 +9,12 @@ import (
 )
 
 func TransByGithubDeepLX(src, proxy string, once *sync.Once, wg *sync.WaitGroup, dst chan map[string]string) {
-	ret, err := translate.TranslateByDeepLX("auto", "zh", src, "", proxy, "")
+	ret, err := translate.TranslateByDeepLX("auto", "zh", src, "", "", "")
 	log.Printf("GitHub 版本 deeplx 返回:%+v\n", ret)
 	result := ret.Data
+	if result == "" {
+		return
+	}
 	m := map[string]string{
 		"Github": result,
 	}

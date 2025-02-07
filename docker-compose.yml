@@ -7,8 +7,6 @@ services:
     #image: zhangyiming748/multi_translator_unifier
     volumes:
       - go_data:/log
-    environment:
-      - LINUXD=33
     restart: unless-stopped
     depends_on: # 确保 mtu 在 redis 和 mysql 之后启动
       - redis

@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-contrib/timeout"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,15 +18,6 @@ func testResponse(c *gin.Context) {
 	})
 }
 
-func timeoutMiddleware() gin.HandlerFunc {
-	return timeout.New(
-		timeout.WithTimeout(3000*time.Millisecond),
-		timeout.WithHandler(func(c *gin.Context) {
-			c.Next()
-		}),
-		timeout.WithResponse(testResponse),
-	)
-}
 func init() {
 	util.SetLog()
 }
@@ -50,12 +40,24 @@ func main() {
 			param.ErrorMessage,
 		)
 	}))
-	engine.Use(timeoutMiddleware())
 	bootstrap.InitTranslate(engine)
 	// 启动http服务
 	port := ":8192"
-	err := engine.Run(port)
-	if err != nil {
-		log.Fatalf("gin服务启动失败,当前端口%s有可能被占用", port)
+	server := &http.Server{
+		Addr:         port,
+		Handler:      engine,
+		ReadTimeout:  0,                 // 禁用 ReadTimeout
+		WriteTimeout: 0,                 // 禁用 WriteTimeout
+		IdleTimeout:  120 * time.Second, // 保持连接不断开, 喵！
 	}
+
+	// 启动服务器
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Fatalf("gin服务启动失败,当前端口%s有可能被占用：%v", port, err)
+	}
+	//err := engine.Run(port)
+	//if err != nil {
+	//	log.Fatalf("gin服务启动失败,当前端口%s有可能被占用", port)
+	//}
 }

@@ -17,6 +17,9 @@ const SUFFIX = "translate"
 func TransByLinuxdoDeepLX(src, apikey string, once *sync.Once, wg *sync.WaitGroup, dst chan map[string]string) {
 	//apikey := os.Getenv("LINUXDO")
 	result, err := Req(src, apikey)
+	if result == "" {
+		return
+	}
 	log.Printf("linuxdo 版本 deeplx 返回:%+v\n", result)
 	m := map[string]string{
 		"LinuxDo": result,
