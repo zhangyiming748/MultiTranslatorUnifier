@@ -22,7 +22,7 @@ func testResponse(c *gin.Context) {
 }
 
 func init() {
-	util.SetLog()
+	//util.SetLog() // 移除这行
 	storage.ConnectToMySQL()
 	storage.InitRedis()
 	storage.GetMysql().Sync2(model.TranslateHistory{})
@@ -31,6 +31,13 @@ func init() {
 func main() {
 	// gin服务
 	gin.SetMode(gin.DebugMode)
+
+	// 在 SetLog() 中获取 MultiWriter
+	multiWriter := util.SetLog()
+
+	// 将 Gin 的日志输出设置为 MultiWriter
+	gin.DefaultWriter = multiWriter
+
 	engine := gin.New()
 	// 自定义 Logger 格式
 	engine.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
