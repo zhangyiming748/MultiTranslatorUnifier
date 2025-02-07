@@ -13,6 +13,18 @@ services:
         image: zhangyiming748/translate
         command: go run /app/main.go
         # docker run -dit --rm --name trans -v C:\Users\zen\Github\MultiTranslatorUnifier:/data -p 8192:8192  zhangyiming748/translate ash
+    test:
+        stdin_open: true
+        tty: true
+        container_name: test
+        ports:
+            - 8191:8192
+        volumes:
+            - go_data:/log
+            - C:\Users\zen\Github\MultiTranslatorUnifier:/data
+        image: zhangyiming748/translate
+        command: ash
+        # docker run -dit --rm --name trans -v C:\Users\zen\Github\MultiTranslatorUnifier:/data -p 8192:8192  zhangyiming748/translate ash
     redis:
         image: redis:8.0-M03-alpine3.21
         container_name: redis

@@ -2,6 +2,7 @@ package storage
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -13,9 +14,9 @@ var engine *xorm.Engine
 func ConnectToMySQL() (*xorm.Engine, error) {
 	// 构建数据库连接字符串, 先连接到mysql数据库, 这里不指定数据库名
 	dsn := fmt.Sprintf("root:123456@(mysql:3306)/?charset=utf8mb4&parseTime=True&loc=Local")
-
+	var err error
 	// 创建 XORM 引擎
-	engine, err := xorm.NewEngine("mysql", dsn)
+	engine, err = xorm.NewEngine("mysql", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("创建 XORM 引擎失败: %w", err)
 	}
@@ -38,8 +39,8 @@ func ConnectToMySQL() (*xorm.Engine, error) {
 	}
 
 	// 可选: 设置连接池参数 (根据需要调整)
-	engine.SetMaxIdleConns(10)
-	engine.SetMaxOpenConns(100)
+	// engine.SetMaxIdleConns(10)
+	// engine.SetMaxOpenConns(100)
 	//engine.SetConnMaxLifetime(time.Hour)
 
 	// 可选: 启用日志记录 (根据需要调整)
@@ -51,7 +52,7 @@ func ConnectToMySQL() (*xorm.Engine, error) {
 		return nil, fmt.Errorf("数据库连接失败: %w", err)
 	}
 	engine.TZLocation, _ = time.LoadLocation("Asia/Shanghai")
-	fmt.Println("数据库连接成功!")
+	log.Printf("数据库连接成功:%v\n", engine)
 
 	return engine, nil
 }

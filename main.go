@@ -25,10 +25,14 @@ func init() {
 	//util.SetLog() // 移除这行
 	storage.ConnectToMySQL()
 	storage.InitRedis()
-	storage.GetMysql().Sync2(model.TranslateHistory{})
+	storage.GetMysql().Sync2(new(model.TranslateHistory))
 }
 
 func main() {
+	// if err := storage.GetMysql().Sync2(new(model.TranslateHistory)); err != nil {
+	// 	log.Printf("同步MySQL数据表出错%v\n", err)
+	// }
+
 	// gin服务
 	gin.SetMode(gin.DebugMode)
 
@@ -54,8 +58,12 @@ func main() {
 		)
 	}))
 	bootstrap.InitTranslate(engine)
-	// 启动http服务
 
+	h := new(model.TranslateHistory)
+	h.Src = "1"
+	h.Dst = "2"
+	h.InsertOne()
+	// 启动http服务
 	err := engine.Run(":8192")
 	if err != nil {
 		log.Fatalln("gin服务启动失败,当前端口有可能被占用")
