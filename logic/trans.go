@@ -1,10 +1,10 @@
 package logic
 
 import (
-	"MultiTranslatorUnifier/github"
-	"MultiTranslatorUnifier/linuxdo"
-	translateshell "MultiTranslatorUnifier/translate-shell"
 	"fmt"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/github"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/linuxdo"
+	translateshell "github.com/zhangyiming748/MultiTranslatorUnifier/translate-shell"
 	"log"
 	"sync"
 	"time"

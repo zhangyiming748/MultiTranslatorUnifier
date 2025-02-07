@@ -1,10 +1,9 @@
-module MultiTranslatorUnifier
+module github.com/zhangyiming748/MultiTranslatorUnifier
 
 go 1.23.6
 
 require (
 	github.com/OwO-Network/DeepLX v1.0.3
-	github.com/gin-contrib/timeout v1.0.2
 	github.com/gin-gonic/gin v1.10.0
 	github.com/zhangyiming748/lumberjack v0.0.1
 )

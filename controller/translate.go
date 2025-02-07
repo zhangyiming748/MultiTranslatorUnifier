@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"MultiTranslatorUnifier/logic"
 	"fmt"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/logic"
 	"log"
 
 	"github.com/gin-gonic/gin"

@@ -6,5 +6,5 @@ RUN go env -w GO111MODULE=on
 RUN go build -o /usr/bin/trans main.go
 # RUN sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#http://mirrors4.tuna.tsinghua.edu.cn/alpine#g' /etc/apk/repositories
 RUN apk add translate-shell
-ENTRYPOINT ["/usr/bin/trans"]
+CMD ["/usr/bin/trans"]
 #docker run -it --rm --name alpine -v C:\Users\zen\Github\MultiTranslatorUnifier:/data golang:1.23.6-alpine3.21 ash

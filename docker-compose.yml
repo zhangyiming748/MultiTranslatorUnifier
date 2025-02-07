@@ -3,7 +3,8 @@ name: multi-translator-unifier-stack
 services:
   mtu:
     container_name: mtu
-    image: zhangyiming748/translate
+    #image: zhangyiming748/translate
+    image: trans:local
     volumes:
       - go_data:/log
     restart: unless-stopped
@@ -11,7 +12,7 @@ services:
       - redis
       - mysql
     ports:
-      - "8192:8192"
+      - "10802:8192"
 
   redis:
     image: redis:8.0-M03-alpine3.21

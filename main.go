@@ -1,9 +1,9 @@
 package main
 
 import (
-	"MultiTranslatorUnifier/bootstrap"
-	"MultiTranslatorUnifier/util"
 	"fmt"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/bootstrap"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/util"
 	"log"
 	"net/http"
 	"time"

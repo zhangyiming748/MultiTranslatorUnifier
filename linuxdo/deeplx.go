@@ -1,9 +1,9 @@
 package linuxdo
 
 import (
-	"MultiTranslatorUnifier/util"
 	"encoding/json"
 	"fmt"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/util"
 	"log"
 	"strings"
 	"sync"

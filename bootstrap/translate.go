@@ -1,7 +1,7 @@
 package bootstrap
 
 import (
-	"MultiTranslatorUnifier/controller"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/controller"
 
 	"github.com/gin-gonic/gin"
 )
