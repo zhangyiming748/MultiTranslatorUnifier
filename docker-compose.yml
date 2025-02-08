@@ -13,6 +13,10 @@ services:
             MYSQL_HOST: mysql
             MYSQL_PORT: 3307
             MYSQL_DBNAME: translate
+            REDIS_HOST: redis
+            REDIS_PORT: 6380
+            REDIS_PASSWORD: 123456
+            REDIS_DB: 1
         volumes:
             - go_data:/log
             - C:\Users\zen\Github\MultiTranslatorUnifier:/data
@@ -35,7 +39,7 @@ services:
         image: redis:8.0-M03-alpine3.21
         container_name: redis
         ports:
-            - "6379:6379"
+            - "6380:6379"
         volumes:
             - redis_data:/data
             - ./redis.conf:/usr/local/etc/redis/redis.conf # 假设您有这个配置文件
