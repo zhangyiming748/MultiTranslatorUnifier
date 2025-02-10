@@ -42,3 +42,26 @@ func InitRedis() error {
 	fmt.Println("Redis 连接成功!")
 	return nil
 }
+
+// Redis 查找函数
+func RedisGet(key string) (string, error) {
+	ctx := context.Background()
+	val, err := RedisClient.Get(ctx, key).Result()
+	if err != nil {
+		if err == redis.Nil {
+			return "", fmt.Errorf("Key %s 不存在", key)
+		}
+		return "", fmt.Errorf("Redis Get 错误: %w", err)
+	}
+	return val, nil
+}
+
+// Redis 添加函数
+func RedisSet(key string, value string) error {
+	ctx := context.Background()
+	err := RedisClient.Set(ctx, key, value, 0).Err() // 0 表示永不过期
+	if err != nil {
+		return fmt.Errorf("Redis Set 错误: %w", err)
+	}
+	return nil
+}

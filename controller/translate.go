@@ -68,7 +68,7 @@ func (t TranslateController) PostTranslate(ctx *gin.Context) {
 	} else {
 		log.Printf("没能在mysql中找到相同记录:%+v\n", h)
 	}
-	if dst, _, err := storage.GetTranslationFromRedis(requestBody.Src); err != nil {
+	if dst, err := storage.RedisGet(requestBody.Src); err != nil {
 		log.Printf("没能在redis中找到相同记录:%+v\n", h)
 	} else {
 		log.Printf("在redis中找到缓存%v\n", dst)
@@ -82,12 +82,12 @@ func (t TranslateController) PostTranslate(ctx *gin.Context) {
 	for k, v := range m {
 		rep.From = k
 		rep.Dst = v
-		h := new(model.TranslateHistory)
-		h.Src = requestBody.Src
-		h.Dst = v
-		h.From = k
-		h.InsertOne()
-		storage.InsertTranslationToRedis(requestBody.Src, v, k)
+		n := new(model.TranslateHistory)
+		n.Src = requestBody.Src
+		n.Dst = v
+		n.From = k
+		n.InsertOne()
+		storage.RedisSet(requestBody.Src, v)
 	}
 
 	ctx.JSON(200, rep)
