@@ -7,6 +7,16 @@ services:
         container_name: trans
         ports:
             - 8192:8192
+        environment:
+            MYSQL_USER: root
+            MYSQL_PASSWORD: 123456
+            MYSQL_HOST: mysql
+            MYSQL_PORT: 3307
+            MYSQL_DBNAME: translate
+            REDIS_HOST: redis
+            REDIS_PORT: 6380
+            REDIS_PASSWORD: 123456
+            REDIS_DB: 1
         volumes:
             - go_data:/log
             - C:\Users\zen\Github\MultiTranslatorUnifier:/data
@@ -29,13 +39,12 @@ services:
         image: redis:8.0-M03-alpine3.21
         container_name: redis
         ports:
-            - "6379:6379"
+            - "6380:6379"
         volumes:
             - redis_data:/data
             - ./redis.conf:/usr/local/etc/redis/redis.conf # 假设您有这个配置文件
         command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes
         restart: unless-stopped
-
     mysql:
         image: mysql:9.2.0
         container_name: mysql # 修正了 container_name
@@ -44,7 +53,7 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: 123456
         ports:
-            - "3306:3306"
+            - "3307:3306"
         restart: unless-stopped
 
 volumes:
