@@ -12,6 +12,9 @@ func TransByGoogle(src, proxy string, once *sync.Once, wg *sync.WaitGroup, dst c
 	cmd := exec.Command("trans", "-brief", "-engine", "google", "-proxy", proxy, ":zh-CN", src)
 	output, err := cmd.CombinedOutput()
 	result := string(output)
+	result = strings.Replace(result, "\\r\\n", "", 1)
+	result = strings.Replace(result, "\n", "", 1)
+	result = strings.Replace(result, "\r\n", "", 1)
 	if result == "" {
 		return
 	}
@@ -35,6 +38,9 @@ func TransByBing(src, proxy string, once *sync.Once, wg *sync.WaitGroup, dst cha
 	log.Printf("查询命令:%s\n", cmd.String())
 	output, err := cmd.CombinedOutput()
 	result := string(output)
+	result = strings.Replace(result, "\\r\\n", "", 1)
+	result = strings.Replace(result, "\n", "", 1)
+	result = strings.Replace(result, "\r\n", "", 1)
 	if result == "" {
 		return
 	}

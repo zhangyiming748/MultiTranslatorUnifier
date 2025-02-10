@@ -3,6 +3,7 @@ package github
 import (
 	"fmt"
 	"log"
+	"strings"
 	"sync"
 
 	"github.com/OwO-Network/DeepLX/translate"
@@ -12,6 +13,9 @@ func TransByGithubDeepLX(src, proxy string, once *sync.Once, wg *sync.WaitGroup,
 	ret, err := translate.TranslateByDeepLX("auto", "zh", src, "", "", "")
 	log.Printf("GitHub 版本 deeplx 返回:%+v\n", ret)
 	result := ret.Data
+	result = strings.Replace(result, "\\r\\n", "", 1)
+	result = strings.Replace(result, "\n", "", 1)
+	result = strings.Replace(result, "\r\n", "", 1)
 	if result == "" {
 		return
 	}
