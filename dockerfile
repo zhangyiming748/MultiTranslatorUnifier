@@ -1,4 +1,4 @@
-FROM golang:1.23.6-alpine3.21 AS builder
+FROM golang:1.24.0-alpine3.21 AS builder
 WORKDIR /app
 COPY . .
 RUN go env -w GO111MODULE=on
