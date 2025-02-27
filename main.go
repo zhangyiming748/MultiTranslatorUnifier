@@ -2,27 +2,20 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"time"
-
 	"github.com/zhangyiming748/MultiTranslatorUnifier/bootstrap"
 	"github.com/zhangyiming748/MultiTranslatorUnifier/storage"
 	"github.com/zhangyiming748/MultiTranslatorUnifier/util"
+	"log"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
-func init(){
-	storage.NewSQLiteStorage("translate.db")
-}
 
 func init() {
-	//util.SetLog() // 移除这行
+	go storage.NewSQLiteStorage("translate.db")
 }
 
 func main() {
-	// if err := storage.GetMysql().Sync2(new(model.TranslateHistory)); err != nil {
-	// 	log.Printf("同步MySQL数据表出错%v\n", err)
-	// }
 
 	// gin服务
 	gin.SetMode(gin.DebugMode)
