@@ -13,7 +13,7 @@ RUN CGO_ENABLED=1 go build -o /usr/bin/trans main.go
 # 使用 alpine 作为运行镜像
 FROM alpine:3.21
 # 安装必要的运行时依赖：sqlite、sqlite-dev、translate-shell 和 基础运行时库
-RUN apk add --no-cache sqlite sqlite-dev translate-shell libc6-compat build-base
+RUN apk add --no-cache sqlite sqlite-dev translate-shell libc6-compat
 # 从构建阶段复制编译好的程序到运行镜像
 COPY --from=builder /usr/bin/trans /usr/bin/trans
 # 设置容器启动命令
