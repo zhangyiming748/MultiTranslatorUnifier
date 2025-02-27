@@ -10,8 +10,8 @@ services:
         environment:
             MYSQL_USER: root
             MYSQL_PASSWORD: 163453
-            MYSQL_HOST: multi-translator-mysql
-            MYSQL_PORT: 3307
+            MYSQL_HOST: 192.168.2.5
+            MYSQL_PORT: 3306
             MYSQL_DBNAME: translate
             REDIS_HOST: multi-translator-redis
             REDIS_PORT: 6380
@@ -32,18 +32,7 @@ services:
             - ./redis.conf:/usr/local/etc/redis/redis.conf # 假设您有这个配置文件
         command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes
         restart: unless-stopped
-    mysql:
-        image: mysql:9.2.0
-        container_name: multi-translator-mysql # 修正了 container_name
-        volumes:
-            - mysql_data:/var/lib/mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: 163453
-        ports:
-            - "3307:3306"
-        restart: unless-stopped
 
 volumes:
     redis_data:
-    mysql_data:
     go_data:
