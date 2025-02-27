@@ -7,16 +7,15 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type SQLiteStorage struct {
-	db *sql.DB
-}
+var	db *sql.DB
+var err error
+
 
 // NewSQLiteStorage 创建新的 SQLite 存储实例
-func NewSQLiteStorage(dbPath string) (*SQLiteStorage, error) {
-	db, err := sql.Open("/app/sqlite3", dbPath)
+func NewSQLiteStorage(dbPath string)  {
+	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Printf("Open %s failed: %v", dbPath, err)
-		return nil, err
 	}
 
 	// 创建翻译记录表
@@ -31,15 +30,15 @@ func NewSQLiteStorage(dbPath string) (*SQLiteStorage, error) {
 	`)
 	if err != nil {
 		log.Printf("Create table failed: %v", err)
-		return nil, err
 	}
-
-	return &SQLiteStorage{db: db}, nil
 }
 
+func GetSqlite() *sql.DB {
+	return db
+}
 // SaveTranslation 保存翻译记录
-func (s *SQLiteStorage) SaveTranslation(from, src, dst string) error {
-	_, err := s.db.Exec(
+func SaveTranslation(from, src, dst string) error {
+	_, err := db.Exec(
 		"INSERT INTO translations (from_source, src, dst) VALUES (?, ?, ?)",
 		from, src, dst,
 	)
@@ -48,9 +47,9 @@ func (s *SQLiteStorage) SaveTranslation(from, src, dst string) error {
 }
 
 // GetTranslation 根据原文查询译文
-func (s *SQLiteStorage) GetTranslation(src string) (string, error) {
+func  GetTranslation(src string) (string, error) {
 	var dst string
-	err := s.db.QueryRow(
+	err := db.QueryRow(
 		"SELECT dst FROM translations WHERE src = ? ORDER BY created_at DESC LIMIT 1",
 		src,
 	).Scan(&dst)
@@ -66,6 +65,6 @@ func (s *SQLiteStorage) GetTranslation(src string) (string, error) {
 }
 
 // Close 关闭数据库连接
-func (s *SQLiteStorage) Close() error {
-	return s.db.Close()
+func Close() {
+	db.Close()
 }

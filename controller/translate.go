@@ -2,13 +2,10 @@ package controller
 
 import (
 	"fmt"
-	"log"
-
-	"github.com/zhangyiming748/MultiTranslatorUnifier/logic"
-
-	"github.com/zhangyiming748/MultiTranslatorUnifier/storage"
-
 	"github.com/gin-gonic/gin"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/logic"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/storage"
+	"log"
 )
 
 type TranslateController struct{}
@@ -54,23 +51,22 @@ func (t TranslateController) PostTranslate(ctx *gin.Context) {
 		log.Printf("成功解析post的json:%+v\n", requestBody)
 	}
 	log.Printf("src:%s\tproxy:%s\tlinuxdo:%s\n", requestBody.Src, requestBody.Proxy, requestBody.LinuxDoKey)
-	s := new(storage.SQLiteStorage)
+	// s := new(storage.SQLiteStorage)
 	var rep ResponseBody
-	if dst, err := s.GetTranslation(requestBody.Src); err != nil {
-		log.Printf("查询数据库失败,err = %v\n", err)
-	} else if dst == "" {
-		log.Println("数据库查询为空")
+	result, err := storage.GetTranslation(requestBody.Src)
+	if result != "" && err == nil {
+		rep.From = "sqlite"
+		rep.Dst = result
+		rep.Src = requestBody.Src
+	} else {
 		m := logic.Trans(requestBody.Src, requestBody.Proxy, requestBody.LinuxDoKey)
 		for k, v := range m {
 			rep.From = k
 			rep.Dst = v
 			rep.Src = requestBody.Src
 		}
-		s.SaveTranslation(rep.From, rep.Src, rep.Dst)
-	} else {
-		rep.From = "sqlite"
-		rep.Dst = dst
-		rep.Src = requestBody.Src
+		storage.SaveTranslation(rep.From, rep.Src, rep.Dst)
 	}
+
 	ctx.JSON(200, rep)
 }
