@@ -12,7 +12,7 @@ import (
 func SetLog() io.Writer { // 修改返回值
 	// 创建一个用于写入文件的Logger实例
 	fileLogger := &lumberjack.Logger{
-		Filename:   strings.Join([]string{"gin.log"}, string(os.PathSeparator)),
+		Filename:   strings.Join([]string{"/data/gin.log"}, string(os.PathSeparator)),
 		MaxSize:    1, // MB
 		MaxBackups: 1,
 		MaxAge:     28, // days

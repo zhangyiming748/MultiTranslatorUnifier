@@ -7,10 +7,6 @@ services:
         container_name: multi-translator
         ports:
             - 8192:8192
-        environment:
-           
         volumes:
-            - ./:/log
             - ./:/data
         image: zhangyiming748/translate:latest
-        command: go run /app/main.go
