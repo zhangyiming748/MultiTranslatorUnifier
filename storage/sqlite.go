@@ -2,6 +2,8 @@ package storage
 
 import (
 	"database/sql"
+	"log"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -13,6 +15,7 @@ type SQLiteStorage struct {
 func NewSQLiteStorage(dbPath string) (*SQLiteStorage, error) {
 	db, err := sql.Open("/app/sqlite3", dbPath)
 	if err != nil {
+		log.Printf("Open %s failed: %v", dbPath, err)
 		return nil, err
 	}
 
@@ -27,6 +30,7 @@ func NewSQLiteStorage(dbPath string) (*SQLiteStorage, error) {
 		)
 	`)
 	if err != nil {
+		log.Printf("Create table failed: %v", err)
 		return nil, err
 	}
 
@@ -39,6 +43,7 @@ func (s *SQLiteStorage) SaveTranslation(from, src, dst string) error {
 		"INSERT INTO translations (from_source, src, dst) VALUES (?, ?, ?)",
 		from, src, dst,
 	)
+	log.Printf("SaveTranslation %s %s %s", from, src, dst)
 	return err
 }
 
@@ -50,7 +55,12 @@ func (s *SQLiteStorage) GetTranslation(src string) (string, error) {
 		src,
 	).Scan(&dst)
 	if err == sql.ErrNoRows {
+		log.Printf("GetTranslation %s not found", src)
 		return "", nil
+	}
+	if err!= nil {
+		log.Printf("GetTranslation %s failed: %v", src, err)
+		return "", err
 	}
 	return dst, err
 }
