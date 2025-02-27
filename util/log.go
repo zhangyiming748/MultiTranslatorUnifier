@@ -4,6 +4,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"runtime"
 	"strings"
 
 	"github.com/zhangyiming748/lumberjack"
@@ -11,8 +12,12 @@ import (
 
 func SetLog() io.Writer { // 修改返回值
 	// 创建一个用于写入文件的Logger实例
+	location:="gin.log"
+	if runtime.GOOS == "linux"{
+location="/data/gin.log"
+	}
 	fileLogger := &lumberjack.Logger{
-		Filename:   strings.Join([]string{"/data/gin.log"}, string(os.PathSeparator)),
+		Filename:   strings.Join([]string{location}, string(os.PathSeparator)),
 		MaxSize:    1, // MB
 		MaxBackups: 1,
 		MaxAge:     28, // days

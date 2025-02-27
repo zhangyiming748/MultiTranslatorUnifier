@@ -2,17 +2,23 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"runtime"
+	"time"
+
 	"github.com/zhangyiming748/MultiTranslatorUnifier/bootstrap"
 	"github.com/zhangyiming748/MultiTranslatorUnifier/storage"
 	"github.com/zhangyiming748/MultiTranslatorUnifier/util"
-	"log"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
-	go storage.NewSQLiteStorage("translate.db")
+	location := "translate.db"
+	if runtime.GOOS == "linux" {
+		location = "/data/translate.db"
+	}
+	go storage.NewSQLiteStorage(location)
 }
 
 func main() {
