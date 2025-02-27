@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/zhangyiming748/MultiTranslatorUnifier/logic"
-	"github.com/zhangyiming748/MultiTranslatorUnifier/model"
+
 	"github.com/zhangyiming748/MultiTranslatorUnifier/storage"
 
 	"github.com/gin-gonic/gin"
@@ -31,6 +31,7 @@ type RequestBody struct {
 type ResponseBody struct {
 	From string `json:"from"`
 	Dst  string `json:"dst"`
+	Src  string `json:"src"`
 }
 
 /*
@@ -53,42 +54,23 @@ func (t TranslateController) PostTranslate(ctx *gin.Context) {
 		log.Printf("成功解析post的json:%+v\n", requestBody)
 	}
 	log.Printf("src:%s\tproxy:%s\tlinuxdo:%s\n", requestBody.Src, requestBody.Proxy, requestBody.LinuxDoKey)
-	m := logic.Trans(requestBody.Src, requestBody.Proxy, requestBody.LinuxDoKey)
-	h := new(model.TranslateHistory)
-	h.Src = requestBody.Src
-	if found, err := h.FindBySrc(); err != nil {
-		log.Printf("mysql查询发生错误:%+v\n", err)
-	} else if found {
-		log.Printf("在mysql中找到缓存%+v\n", h)
-		rep := new(ResponseBody)
-		rep.Dst = h.Dst
-		rep.From = "cache"
-		ctx.JSON(200, rep)
-		return
-	} else {
-		log.Printf("没能在mysql中找到相同记录:%+v\n", h)
-	}
-	if dst, err := storage.RedisGet(requestBody.Src); err != nil {
-		log.Printf("没能在redis中找到相同记录:%+v\n", h)
-	} else {
-		log.Printf("在redis中找到缓存%v\n", dst)
-		rep := new(ResponseBody)
-		rep.Dst = h.Dst
-		rep.From = "cache"
-		ctx.JSON(200, rep)
-		return
-	}
+	s := new(storage.SQLiteStorage)
 	var rep ResponseBody
-	for k, v := range m {
-		rep.From = k
-		rep.Dst = v
-		n := new(model.TranslateHistory)
-		n.Src = requestBody.Src
-		n.Dst = v
-		n.From = k
-		n.InsertOne()
-		storage.RedisSet(requestBody.Src, v)
+	if dst, err := s.GetTranslation(requestBody.Src); err != nil {
+		log.Printf("查询数据库失败,err = %v\n", err)
+	} else if dst == "" {
+		log.Println("数据库查询为空")
+		m := logic.Trans(requestBody.Src, requestBody.Proxy, requestBody.LinuxDoKey)
+		for k, v := range m {
+			rep.From = k
+			rep.Dst = v
+			rep.Src = requestBody.Src
+		}
+		s.SaveTranslation(rep.From, rep.Src, rep.Dst)
+	} else {
+		rep.From = "sqlite"
+		rep.Dst = dst
+		rep.Src = requestBody.Src
 	}
-
 	ctx.JSON(200, rep)
 }
