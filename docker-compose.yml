@@ -4,7 +4,7 @@ services:
     mtu:
         stdin_open: true
         tty: true
-        container_name: trans
+        container_name: multi-translator
         ports:
             - 8192:8192
         environment:
@@ -24,7 +24,7 @@ services:
         command: go run /app/main.go
     redis:
         image: redis:8.0-M03-alpine3.21
-        container_name: redis
+        container_name: multi-translator-redis
         ports:
             - "6380:6379"
         volumes:
@@ -34,7 +34,7 @@ services:
         restart: unless-stopped
     mysql:
         image: mysql:9.2.0
-        container_name: mysql # 修正了 container_name
+        container_name: multi-translator-mysql # 修正了 container_name
         volumes:
             - mysql_data:/var/lib/mysql
         environment:
