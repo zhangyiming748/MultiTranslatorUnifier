@@ -9,32 +9,19 @@ services:
             - 8192:8192
         environment:
             MYSQL_USER: root
-            MYSQL_PASSWORD: 123456
+            MYSQL_PASSWORD: 163453
             MYSQL_HOST: mysql
             MYSQL_PORT: 3307
             MYSQL_DBNAME: translate
             REDIS_HOST: redis
             REDIS_PORT: 6380
-            REDIS_PASSWORD: 123456
+            REDIS_PASSWORD: 163453
             REDIS_DB: 1
         volumes:
             - go_data:/log
             - C:\Users\zen\Github\MultiTranslatorUnifier:/data
-        image: zhangyiming748/translate
+        image: zhangyiming748/translate:latest
         command: go run /app/main.go
-        # docker run -dit --rm --name trans -v C:\Users\zen\Github\MultiTranslatorUnifier:/data -p 8192:8192  zhangyiming748/translate ash
-    test:
-        stdin_open: true
-        tty: true
-        container_name: test
-        ports:
-            - 8191:8192
-        volumes:
-            - go_data:/log
-            - C:\Users\zen\Github\MultiTranslatorUnifier:/data
-        image: zhangyiming748/translate
-        command: ash
-        # docker run -dit --rm --name trans -v C:\Users\zen\Github\MultiTranslatorUnifier:/data -p 8192:8192  zhangyiming748/translate ash
     redis:
         image: redis:8.0-M03-alpine3.21
         container_name: redis
