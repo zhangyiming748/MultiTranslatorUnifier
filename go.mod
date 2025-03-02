@@ -3,7 +3,7 @@ module github.com/zhangyiming748/MultiTranslatorUnifier
 go 1.24.0
 
 require (
-	github.com/OwO-Network/DeepLX v1.0.5
+	github.com/OwO-Network/DeepLX v1.0.6
 	github.com/gin-gonic/gin v1.10.0
 	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/zhangyiming748/lumberjack v0.0.1
@@ -49,7 +49,7 @@ require (
 	go.uber.org/mock v0.5.0 // indirect
 	golang.org/x/arch v0.14.0 // indirect
 	golang.org/x/crypto v0.35.0 // indirect
-	golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa // indirect
+	golang.org/x/exp v0.0.0-20250228200357-dead58393ab7 // indirect
 	golang.org/x/mod v0.23.0 // indirect
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sync v0.11.0 // indirect
