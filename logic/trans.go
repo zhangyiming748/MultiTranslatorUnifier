@@ -2,6 +2,7 @@ package logic
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"runtime"
 	"sync"
@@ -48,6 +49,9 @@ func Trans(src string) (from ,ans string) {
 		Trans(src)
 	}
 	h.Dst=result
-	h.InsertOne()
+	n ,err:=h.InsertOne()
+	if err!=nil{
+		log.Printf("插入历史记录失败,err = %v,插入了%d条记录\n",err,n)
+	}
 	return "new",result
 }
