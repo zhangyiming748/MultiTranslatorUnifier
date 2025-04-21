@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
 func init() {
 	// 初始化配置文件
 	util.SetLog()

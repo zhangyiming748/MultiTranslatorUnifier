@@ -23,9 +23,9 @@ type RequestBody struct {
 }
 
 type ResponseBody struct {
-	Src string `json:"src"`
+	Src  string `json:"src"`
 	From string `json:"from"`
-	Dst string `json:"dst"`
+	Dst  string `json:"dst"`
 }
 
 /*
@@ -49,7 +49,7 @@ func (t TranslateController) PostTranslate(ctx *gin.Context) {
 	log.Printf("src:%s\n", requestBody.Src)
 	// s := new(storage.SQLiteStorage)
 	var rep ResponseBody
-	rep.From,rep.Dst = logic.Trans(requestBody.Src)
+	rep.From, rep.Dst = logic.Trans(requestBody.Src)
 	rep.Src = requestBody.Src
 	ctx.JSON(200, rep)
 }

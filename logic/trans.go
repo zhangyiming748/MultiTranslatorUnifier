@@ -17,19 +17,19 @@ const (
 	TIMEOUT = 30
 )
 
-func Trans(src string) (from ,ans string) {
+func Trans(src string) (from, ans string) {
 	// src := "hello"
-	h:=new(storage.History)
-	h.Src=src
-	if has,_:=h.FindBySrc();has{
-		return "cache",h.Dst
+	h := new(storage.History)
+	h.Src = src
+	if has, _ := h.FindBySrc(); has {
+		return "cache", h.Dst
 	}
 	dst := make(chan string, 1)
 	//dst := make(chan map[string]string, 1) // 修改为 map[string]string 的通道
 	once := new(sync.Once)
 	wg := new(sync.WaitGroup)
 	wg.Add(1)
-	if runtime.GOOS != "windows"{
+	if runtime.GOOS != "windows" {
 		if proxy := os.Getenv("PROXY"); proxy != "" {
 			go translateshell.TransByGoogle(src, proxy, once, wg, dst)
 		} else {
@@ -48,10 +48,10 @@ func Trans(src string) (from ,ans string) {
 		fmt.Printf("翻译超时,重试\n此时的src = %v\n", src)
 		Trans(src)
 	}
-	h.Dst=result
-	n ,err:=h.InsertOne()
-	if err!=nil{
-		log.Printf("插入历史记录失败,err = %v,插入了%d条记录\n",err,n)
+	h.Dst = result
+	n, err := h.InsertOne()
+	if err != nil {
+		log.Printf("插入历史记录失败,err = %v,插入了%d条记录\n", err, n)
 	}
-	return "new",result
+	return "new", result
 }
