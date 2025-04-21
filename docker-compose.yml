@@ -10,3 +10,10 @@ services:
         volumes:
             - ./:/data
         image: zhangyiming748/translate:latest
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=163453
+            - MYSQL_HOST=192.168.2.10
+            - MYSQL_PORT=3306
+            - MYSQL_DATABASE=translate
+            - LINUXDO=1

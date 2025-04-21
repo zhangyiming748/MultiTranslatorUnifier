@@ -6,11 +6,16 @@ import (
 	"time"
 
 	"github.com/zhangyiming748/MultiTranslatorUnifier/bootstrap"
+	"github.com/zhangyiming748/MultiTranslatorUnifier/storage"
 	"github.com/zhangyiming748/MultiTranslatorUnifier/util"
 
 	"github.com/gin-gonic/gin"
 )
-
+func init() {
+	// 初始化配置文件
+	util.SetLog()
+	storage.SetMysql()
+}
 func main() {
 
 	// gin服务
