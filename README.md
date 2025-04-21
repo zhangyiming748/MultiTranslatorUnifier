@@ -18,10 +18,8 @@
 # 逻辑
 
 
-+ 提供 proxy 的时候 查询 Google 和 Bing
-+ 提供 linuxdo 的时候 查询 始皇
-+ 只提供dst 的时候 查询 deeplx
-+ 全提供的话同时查询五个,哪个更快返回哪个
+if 提供proxy 查询 translateshell google引擎
+if 
 
 
 

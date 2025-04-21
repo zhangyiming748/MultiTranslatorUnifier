@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/zhangyiming748/MultiTranslatorUnifier/logic"
-	"github.com/zhangyiming748/MultiTranslatorUnifier/storage"
 	"log"
 )
 
@@ -20,15 +19,12 @@ func (t TranslateController) GetTranslate(ctx *gin.Context) {
 
 // 结构体必须大写 否则找不到
 type RequestBody struct {
-	Src        string `json:"src"`
-	Proxy      string `json:"proxy"`
-	LinuxDoKey string `json:"linuxdokey"`
+	Src string `json:"src"`
 }
 
 type ResponseBody struct {
-	From string `json:"from"`
-	Dst  string `json:"dst"`
-	Src  string `json:"src"`
+	Src string `json:"src"`
+	Dst string `json:"dst"`
 }
 
 /*
@@ -50,23 +46,10 @@ func (t TranslateController) PostTranslate(ctx *gin.Context) {
 	} else {
 		log.Printf("成功解析post的json:%+v\n", requestBody)
 	}
-	log.Printf("src:%s\tproxy:%s\tlinuxdo:%s\n", requestBody.Src, requestBody.Proxy, requestBody.LinuxDoKey)
+	log.Printf("src:%s\n", requestBody.Src)
 	// s := new(storage.SQLiteStorage)
 	var rep ResponseBody
-	result, err := storage.GetTranslation(requestBody.Src)
-	if result != "" && err == nil {
-		rep.From = "sqlite"
-		rep.Dst = result
-		rep.Src = requestBody.Src
-	} else {
-		m := logic.Trans(requestBody.Src, requestBody.Proxy, requestBody.LinuxDoKey)
-		for k, v := range m {
-			rep.From = k
-			rep.Dst = v
-			rep.Src = requestBody.Src
-		}
-		storage.SaveTranslation(rep.From, rep.Src, rep.Dst)
-	}
-
+	rep.Dst = logic.Trans(requestBody.Src)
+	rep.Src = requestBody.Src
 	ctx.JSON(200, rep)
 }
