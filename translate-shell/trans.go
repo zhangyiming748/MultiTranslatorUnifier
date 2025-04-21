@@ -30,8 +30,8 @@ func TransByGoogle(src, proxy string, once *sync.Once, wg *sync.WaitGroup, dst c
 	}
 }
 
-func TransByBing(src, proxy string, once *sync.Once, wg *sync.WaitGroup, dst chan string) {
-	cmd := exec.Command("trans", "-brief", "-engine", "bing", "-proxy", proxy, ":zh-CN", src)
+func TransByBing(src string, once *sync.Once, wg *sync.WaitGroup, dst chan string) {
+	cmd := exec.Command("trans", "-brief", "-engine", "bing", ":zh-CN", src)
 	log.Printf("查询命令:%s\n", cmd.String())
 	output, err := cmd.CombinedOutput()
 	result := string(output)

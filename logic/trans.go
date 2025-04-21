@@ -32,7 +32,7 @@ func Trans(src string) (from ,ans string) {
 		if proxy := os.Getenv("PROXY"); proxy != "" {
 			go translateshell.TransByGoogle(src, proxy, once, wg, dst)
 		} else {
-			go translateshell.TransByBing(src, proxy, once, wg, dst)
+			go translateshell.TransByBing(src, once, wg, dst)
 		}
 	}
 	os.Setenv("LINUXDO", "DrkwqR4tE3DRyOseVibFah62BJXmcIryt4I9rTtzXTs")
