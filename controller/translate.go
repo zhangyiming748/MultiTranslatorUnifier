@@ -33,10 +33,9 @@ curl --location --request POST 'http://127.0.0.1:8192/api/v1/translate' \
 
 	--data-raw '{
 	    "src":"",
-	    "proxy":"",
-	    "linuxdokey":""
 	}'
 */
+
 func (t TranslateController) PostTranslate(ctx *gin.Context) {
 	log.Println("接收到post请求")
 	var requestBody RequestBody

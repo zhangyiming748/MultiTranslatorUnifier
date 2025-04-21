@@ -10,6 +10,7 @@ COPY . .
 RUN go env -w GO111MODULE=on
 # 编译 Go 程序，启用 CGO
 RUN CGO_ENABLED=1 go build -o /usr/bin/trans main.go
+
 # 使用 alpine 作为运行镜像
 FROM alpine:3.21
 # 安装必要的运行时依赖：sqlite、sqlite-dev、translate-shell 和 基础运行时库
