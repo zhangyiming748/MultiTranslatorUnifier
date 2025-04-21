@@ -11,6 +11,7 @@ import (
 
 const PREFIX = "https://api.deeplx.org"
 const SUFFIX = "translate"
+
 type DeepLXTranslationResult struct {
 	Code         int      `json:"code"`
 	ID           int64    `json:"id"`
@@ -21,6 +22,7 @@ type DeepLXTranslationResult struct {
 	TargetLang   string   `json:"target_lang"`
 	Method       string   `json:"method"`
 }
+
 func TransByLinuxdoDeepLX(src, apikey string, once *sync.Once, wg *sync.WaitGroup, dst chan string) {
 	//apikey := os.Getenv("LINUXDO")
 	result, err := Req(src, apikey)

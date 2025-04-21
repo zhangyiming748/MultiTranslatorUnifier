@@ -4,10 +4,13 @@ go 1.24.2
 
 require (
 	github.com/gin-gonic/gin v1.10.0
+	github.com/go-sql-driver/mysql v1.9.2
 	github.com/zhangyiming748/lumberjack v0.0.1
+	xorm.io/xorm v1.3.9
 )
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/bytedance/sonic v1.12.9 // indirect
 	github.com/bytedance/sonic/loader v0.2.3 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
@@ -17,6 +20,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.25.0 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
+	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.10 // indirect
@@ -27,6 +31,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
+	github.com/syndtr/goleveldb v1.0.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	golang.org/x/arch v0.14.0 // indirect
@@ -37,4 +42,5 @@ require (
 	google.golang.org/protobuf v1.36.5 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	xorm.io/builder v0.3.11-0.20220531020008-1bd24a7dc978 // indirect
 )

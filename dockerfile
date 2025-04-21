@@ -1,5 +1,5 @@
 # 使用 golang alpine 作为构建镜像
-FROM golang:1.24.0-alpine3.21 AS builder
+FROM golang:1.24.2-alpine3.21 AS builder
 # 设置工作目录为 /app
 WORKDIR /app
 # 安装编译所需的依赖
