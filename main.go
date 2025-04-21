@@ -15,6 +15,7 @@ func init() {
 	// 初始化配置文件
 	util.SetLog()
 	storage.SetMysql()
+	storage.GetMysql().Sync2(storage.History{})
 }
 func main() {
 
