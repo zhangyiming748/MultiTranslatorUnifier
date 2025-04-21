@@ -17,5 +17,6 @@ FROM alpine:3.21
 RUN apk add --no-cache sqlite sqlite-dev translate-shell libc6-compat
 # 从构建阶段复制编译好的程序到运行镜像
 COPY --from=builder /usr/bin/trans /usr/bin/trans
+EXPOSE 8192
 # 设置容器启动命令
 ENTRYPOINT ["/usr/bin/trans"]
