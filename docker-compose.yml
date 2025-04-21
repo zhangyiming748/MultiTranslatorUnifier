@@ -1,5 +1,4 @@
 name: multi-translator-unifier-stack
-
 services:
     mtu:
         stdin_open: true

@@ -60,10 +60,11 @@ func Req(src, apikey string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	log.Printf("%v\n", string(b))
+	
 	var d DeepLXTranslationResult
 	if e := json.Unmarshal(b, &d); e != nil {
 		return "", e
 	}
+	log.Printf("%+v\n", d)
 	return d.Data, err
 }
